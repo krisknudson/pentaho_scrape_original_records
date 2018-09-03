@@ -1109,7 +1109,7 @@ temp = temp.replace("&lt;/h1>","");
 
 var month_expression = /january|february|march|april|may|june|july|august|september|october|november|december/i;
 var year_expression = /1864|1865/ig;
-var contact_expression = /headquarters|hdqrs|department|dept|circular|core|brigade|division|orders|special|continuation|road|office|chief|quartermaster|confederate|union|\-0-9|\-|\*/ig;
+var contact_expression = /headquarters|hdqrs|department|dept|circular|core|brigade|division|orders|special|continuation|road|office|chief|quartermaster|confederate|union|0|1|2|3|4|5|6|7|8|9|\-|\*/ig;
 var location_expression = /augusta/i;
 var location_generic_expression = /road/i;
 
@@ -1121,65 +1121,69 @@ var year_index;
 var contact_from= "";
 
 																					
-if (content.match(year_expression) &amp;&amp; content.match(month_expression)){					//if content field contains month and year
+if (content.match(year_expression) &amp;&amp; content.match(month_expression)){						//if content field contains month and year
 	location_index = content.search(location_expression);
 	month_index = content.search(month_expression);
 	year_index = content.search(year_expression);
 
-	if (content.match(location_expression)){											//identify location names similar to month names
+	if (content.match(location_expression) &amp;&amp; content.length&lt;50){							//identify location names similar to month names and exclude content fields larger than 50 characters
 		
-		var temp_location_index = content.lastIndexOf(",");								//extract location field
+		var temp_location_index = content.lastIndexOf(",");									//extract location field
 		location = content.substring(0, content.lastIndexOf(",", temp_location_index-1));
 
 		var temp_content = content.substring(location.length, content.length);
 		month_index = temp_content.search(month_expression);
 		year_index = temp_content.search(year_expression);
-		date = temp_content.substring(month_index, year_index+4);						//extract date field after location field
+		date = temp_content.substring(month_index, year_index+4);							//extract date field after location field
 
 	}
 	else{
-		date = content.substring(month_index, year_index+4);							//extract date field
-
-		if (content.substring(0, month_index-1) == content.substring(0, 0)){			//if string before date is null
-			if (date == date.toUpperCase()){
-				location = "";
-			}
-			else{
-				//do nothing
-			}
+		date = content.substring(month_index, year_index+4);								//extract date field
+		if (date.length>50){																//exclude date fields larger than 50 characters
+			date = "";
 		}
 		else{
-			location = content.substring(0, month_index-1);
-			rtrim(location);
+
+			if (content.substring(0, month_index-1) == content.substring(0, 0)){			//if string before date is null
+				if (date == date.toUpperCase()){
+					location = "";
+				}
+				else{
+					//do nothing
+				}
+			}
+			else{
+				location = content.substring(0, month_index-1);
+				rtrim(location);
 	
-			if (location.length>50){													//exclude location fields larger than 50 characters
-				location = "";
-				// do nothing
+				if (location.length>50){													//exclude location fields larger than 50 characters
+					location = "";
+				}
+				else if (location.substring(location.length-1, location.length) == ","){  	//if comma exists in location field, remove it
+					location = location.substring(0, location.length-1);
+				}
+				else {
+					//do nothing
+				}
 			}
-			else if (location.substring(location.length-1, location.length) == ","){  	//if comma exists in location field, remove it
-				location = location.substring(0, location.length-1);
-			}
-			else {
-				//do nothing
-			}
+			contact_from = "";
 		}
-		contact_from = "";
 	}
 }
 else{
-	if (content == content.toUpperCase()){												//if content field is uppercase
-		if (content.match(location_generic_expression)){								//if content field matches generic location
-			location = trim(content.replace(",",""));									//remove commas, trim content field, save as location
+	if (content == content.toUpperCase()){													//if content field is uppercase
+		if (content.match(location_generic_expression)){									//if content field matches generic location
+			location = trim(content.replace(",",""));										//remove commas, trim content field, save as location
 			contact_from = "";
 			//date = "";
 		}
-		else if (content.match(contact_expression)){									//ignore generic uppercase names		
+		else if (content.match(contact_expression)){										//ignore generic uppercase names		
 			contact_from = "";
 			location = "";
 			date = "";
 		}
 		else{
-			contact_from = trim(content.replace(",",""));								//remove commas, trim content field, save as contact_from
+			contact_from = trim(content.replace(",",""));									//remove commas, trim content field, save as contact_from
 		}
 	}
 	else{
