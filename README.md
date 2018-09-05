@@ -10,10 +10,10 @@ If PDI is running, restart it.
 Potential Requirements:
 The security certificate for the source URL (https://ehistory.osu.edu/books/official-records) may need to be installed.
 
-Visit URL, download the security certificate, save as ehistory_osu_edu.cer.
-Open Command Prompt.
-cd C:\Program Files\Java\jre1.8.0_181\lib\security --> PATH to Java
-keytool -import -alias ehistory -keystore  \cacerts -file C:\{PATH to downloaded certificate file}\ehistory_osu_edu.cer
+1. Visit URL, download the security certificate, save as ehistory_osu_edu.cer.
+2. Open Command Prompt.
+3. cd C:\Program Files\Java\jre1.8.0_181\lib\security --> PATH to Java
+4. keytool -import -alias ehistory -keystore  \cacerts -file C:\{PATH to downloaded certificate file}\ehistory_osu_edu.cer
 
 Procedure:
 1.  Place the job and transformation files into your local Pentaho\{version}\data-integration\samples\transformations directory.
