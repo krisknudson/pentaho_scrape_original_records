@@ -22,10 +22,10 @@ Procedure:
 4.  In PDI, select Edit, Set Environment Variables and enter the following:
 
 NAME        VALUE
-page_start  0979
-page_stop   0989
-serial      099
-url         https://ehistory.osu.edu/books/official-records
+A.  page_start  0979
+B.  page_stop   0989
+C.  serial      099
+D.  url         https://ehistory.osu.edu/books/official-records
 
 5.  Once the environment variables are set, start job_generate_urls.kjb.
 
@@ -37,5 +37,5 @@ Results:
 Tip:  As long as URLs are listed in the file url_list.csv, then transformation_scrape_original_records.ktr could be run manually (without running the job).  The job is simply to prepare a range of URLs easily.
 
 Notes:  
--I suggest a maximum range of 200 pages.
--This project could be easily modified to extract and parse content from HTML sites that have incremental page numbers in the URL path.
+1.  I suggest a maximum range of 200 pages.
+2.  This project could be easily modified to extract and parse content from HTML sites that have incremental page numbers in the URL path.
